@@ -1592,6 +1592,25 @@ input, textarea, select {
 }
 
 /* ---------- RESPONSIVE ---------- */
+/* Ye line responsive ke liye sabse zaroori hai */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden; /* Horizontal scroll hatane ke liye */
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
 @media (max-width: 1024px) {
     .services-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1601,8 +1620,10 @@ input, textarea, select {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    /* Tablet pe bhi 3 columns tools ke liye zyada hote hain, 2 kar rahe hain */
     .tools-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 
     .footer-grid {
@@ -1612,7 +1633,12 @@ input, textarea, select {
 
 @media (max-width: 768px) {
     :root {
-        --section-padding: 70px 0;
+        --section-padding: 60px 0;
+    }
+
+    /* Headings ko thoda chota karna mobile ke liye (Agar classes alag hain toh unka naam change kar) */
+    h1, h2, h3, .section-title {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
     }
 
     .hamburger {
@@ -1623,13 +1649,15 @@ input, textarea, select {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 300px;
+        width: 85%; /* Fixed width ki jagah 85% lena achha rehta hai chote screens pe */
+        max-width: 300px;
         height: 100vh;
         background: var(--color-dark);
         padding: 100px 30px 40px;
-        transition: right var(--transition-slow);
+        transition: right 0.4s ease-in-out;
         box-shadow: -10px 0 40px rgba(0,0,0,0.5);
         overflow-y: auto;
+        z-index: 1001;
     }
 
     .nav.open {
@@ -1652,21 +1680,30 @@ input, textarea, select {
         margin-left: 0;
         margin-top: 12px;
         text-align: center;
+        display: block;
     }
 
+    /* About Section Overflow Fix */
     .about-grid {
         grid-template-columns: 1fr;
-        gap: 60px;
+        gap: 50px;
+    }
+
+    /* Container overflow hidden kar dega bahar nikalne wali images ko */
+    .about-img-main {
+        position: relative;
+        overflow: visible; 
     }
 
     .about-img-secondary {
-        right: 20px;
-        bottom: -20px;
+        right: 10px; /* Kam kiya taaki screen se bahar na jaye */
+        bottom: -15px;
+        width: 45%; /* Fixed width rakhna safe hai */
     }
 
     .about-experience-badge {
-        left: 0;
-        top: -40px;
+        left: 10px; /* Negative value se bachane ke liye */
+        top: -30px;
     }
 
     .about-features {
@@ -1677,12 +1714,15 @@ input, textarea, select {
         grid-template-columns: 1fr;
     }
 
+    /* Tools grid ko 2 columns pe set kar diya */
     .tools-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
 
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .contact-grid {
@@ -1691,7 +1731,7 @@ input, textarea, select {
     }
 
     .contact-form-wrap {
-        padding: 28px;
+        padding: 20px;
     }
 
     .footer-grid {
@@ -1706,25 +1746,31 @@ input, textarea, select {
     }
 
     .hero-stats {
-        gap: 24px;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .stat-number {
-        font-size: 32px;
+        font-size: 28px;
     }
 
     .stat-divider {
-        height: 35px;
+        display: none; /* Chote screen pe divider hide karna achha rehta hai */
     }
 }
 
 @media (max-width: 480px) {
+    :root {
+        --section-padding: 50px 0;
+    }
+
     .materials-grid {
         grid-template-columns: 1fr;
     }
 
     .tools-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* 2 hi rehne do, 1 karne pe bohot fikki lagegi */
     }
 
     .gallery-grid {
@@ -1741,27 +1787,32 @@ input, textarea, select {
         justify-content: center;
     }
 
+    /* 480px ke neeche image layout ko simple banana zaroori hai */
     .about-img-main img {
-        height: 350px;
+        height: 280px;
+        object-fit: cover;
     }
 
     .about-img-secondary {
         position: relative;
         bottom: auto;
         right: auto;
-        margin-top: -30px;
+        left: 0;
+        margin-top: -40px;
+        margin-left: 20px;
+        width: 50%;
         z-index: 2;
     }
 
     .about-experience-badge {
         position: absolute;
-        top: -45px;
+        top: -40px;
         left: auto;
-        right: 20px;
+        right: 10px;
     }
 
     .about-decoration {
-        display: none;
+        display: none; /* Chote screen pe decoration hatana best practice hai */
     }
 }
 
@@ -1769,11 +1820,12 @@ input, textarea, select {
 .nav-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
+    background: rgba(0,0,0,0.6);
+    z-index: 999; /* Nav ke niche hona chahiye */
     opacity: 0;
     visibility: hidden;
-    transition: all var(--transition-base);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(2px); /* Thoda blur add kiya hai smoothness ke liye */
 }
 
 .nav-overlay.active {
